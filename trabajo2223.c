@@ -601,7 +601,7 @@ void ordenarconductividad(char nombrefichero[]){
 	  char nfuentes[10];
 	  int contador=0, i=0, j;
 	  float vector[50], aux;
-	  int vector2[50];
+	  char vector2[50];
 	  char titulo[10], titulo2[10], titulo3[10], titulo4[10], titulo5[10];
 	
 	 FILE *fsalida1;
@@ -614,14 +614,11 @@ void ordenarconductividad(char nombrefichero[]){
 	        printf("%s\n", titulo2);  
 	        fflush(stdin);
             while(fscanf(fsalida1,"%s %f %f %f %f", nfuentes, &ph ,&conductividad, &turbidez, &coliformes)!=EOF){
-		      vector[i]= conductividad;
-		      
+		      vector[i]= ph;
 				contador++; 
 				i++;
-			
 					}
 					fclose(fsalida1);
-			
 					
 			for (i=0; i<contador-1;i++){
                 for(j=i+1;j<contador;j++){
@@ -633,7 +630,7 @@ void ordenarconductividad(char nombrefichero[]){
                 }
         }
         for(i=0;i<contador;i++){
-                printf("%f %s\n", vector[i], vector2[i]);
+                 printf("%f %c\n", vector[i],vector2[i]);
         }
 
 				}
@@ -675,7 +672,7 @@ void ordenarph(char nombrefichero[]){
                 }
         }
         for(i=0;i<contador;i++){
-                printf("%f %s\n", vector[i], vector2[i]);
+                printf("%f %c\n", vector[i], vector2[i]);
         }
 
 				}
