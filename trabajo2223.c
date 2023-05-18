@@ -596,41 +596,45 @@ float media(char nombrefichero[]){
             fflush(stdin);
 	return media;
 }
+
 void ordenarconductividad(char nombrefichero[]){
-	float ph, conductividad, turbidez, coliformes, media;
-	  char nfuentes[10];
-	  int contador=0, i=0, j;
-	  float vector[50], aux;
-	  char vector2[50];
-	  char titulo[10], titulo2[10], titulo3[10], titulo4[10], titulo5[10];
-	
-	 FILE *fsalida1;
-	        fsalida1 = fopen(nombrefichero,"r");
-        	if (fsalida1 == NULL) {
+		int i , contador, j, k, aux;
+		struct TAnalisis fuentes[200];
+		
+	char titulo1[20], titulo2[20], titulo3[20], titulo4[20], titulo5[20], aux2[50];
+		 
+		 FILE *fichero;
+	        fichero = fopen(nombrefichero,"r");
+        	if (fichero == NULL) {
 	    	    printf("Error, no puede leer el fichero.\n");	
-	        }
-	        
-	        fscanf(fsalida1,"%s %s %s %s %s",titulo, titulo2, titulo3, titulo4, titulo5);
-	        printf("%s\n", titulo2);  
-	        fflush(stdin);
-            while(fscanf(fsalida1,"%s %f %f %f %f", nfuentes, &ph ,&conductividad, &turbidez, &coliformes)!=EOF){
-		      vector[i]= ph;
-				contador++; 
-				i++;
-					}
-					fclose(fsalida1);
+        }
+	
+	fscanf(fichero,"%s %s %s %s %s",titulo1, titulo2, titulo3, titulo4, titulo5);
+	    
+    while (fscanf(fichero, "%s %f %d %d %d", fuentes[i].nombre, &fuentes[i].ph, &fuentes[i].conductividad, &fuentes[i].turbidez, &fuentes[i].coliformes) !=EOF ) {
+        //printf("%s %f %d %d %d\n", fuentes[i].nombre, fuentes[i].ph, fuentes[i].conductividad, fuentes[i].turbidez, fuentes[i].coliformes);
+							
+		i++;
+        
+    }fflush(stdin);
+    
+    fclose(fichero);
+    contador=i;
+   
 					
 			for (i=0; i<contador-1;i++){
                 for(j=i+1;j<contador;j++){
-                        if(vector[i]>vector[j]){
-                                aux=vector[i];
-                                vector[i]=vector[j];
-                                vector[j]=aux;
-                        }
-                }
+
+            if (fuentes[i].conductividad < fuentes[j].conductividad) {
+                struct TAnalisis maximo = fuentes[i];
+                fuentes[i] = fuentes[j ];
+                fuentes[j] = maximo;
+            }
         }
+    }
         for(i=0;i<contador;i++){
-                 printf("%f %c\n", vector[i],vector2[i]);
+        
+                 printf("%d %s\n", fuentes[i].conductividad,fuentes[i].nombre);
         }
 
 				}
@@ -672,12 +676,13 @@ void ordenarph(char nombrefichero[]){
                 }
         }
         for(i=0;i<contador;i++){
-                printf("%f %c\n", vector[i], vector2[i]);
+                printf("%f \n", vector[i], vector2[i]);
         }
 
 				}
 
 menuSistema(){
+	struct TAnalisis fuentes[200];
 		
 	int opcionMenu;
 	char nombrefic[20], nombrefichero[20],nficheros[20];
@@ -803,7 +808,7 @@ menuSistema(){
 					abrirficherolista(lista);
 	    	        printf("introduce el nombre del fichero que quiere mirar\n");
 	            	scanf("%s",nombrefichero);
-	            	printf("se ordena la conductividad de menor a mayor\n");
+	            	printf("se ordena la conductividad de mayor a menor\n");
 	    	        ordenarconductividad(nombrefichero);
 	    	        printf("\n\n\n\tUtilice s y despues enter para volver al menu principal\n");
 		        	fflush(stdin);
