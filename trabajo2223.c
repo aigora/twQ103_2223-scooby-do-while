@@ -50,7 +50,7 @@ void abrirficherolista(char []);
 float media(char nombrefichero[]);
 void ordenarconductividad(char nombrefichero[]);
 void ordenarph(char nombrefichero[]);
-
+struct TAnalisis maximaturbidez(struct TAnalisis fuentes[], struct TAnalisis maxturbidez);
 
 int banner();
 
@@ -158,8 +158,9 @@ int banner2(){
 		printf("\t\t[3]. ORDENAR FICHERO POR CONDUCTIVIDAD\n");	
 		printf("\t\t[4]. ORDENAR FICHERO POR ACIDEZ\n");		
 		printf("\t\t[5]. MEDIA DE LOS PARAMETROS DEL FICHERO\n");
-		printf("\t\t[6]. AYUDA E INSTRUCCIONES\n");
-		printf("\t\t[7]. SALIR AL MENU PRINCIPAL Y CERRAR SESION\n");
+		printf("\t\t[6]. VALOR DE FUENTE CON MAYOR NIVEL DE TURBIDEZ\n");
+		printf("\t\t[7]. AYUDA E INSTRUCCIONES\n");
+		printf("\t\t[8]. SALIR AL MENU PRINCIPAL Y CERRAR SESION\n");
 		printf("\n\t\tIngrese su opcion: [ ]\b\b");	
 }
 
@@ -246,6 +247,24 @@ int ficheroStruct(struct TAnalisis fuentes[]){
     fclose(fichero);
     
     return i;
+}
+
+struct TAnalisis maximaturbidez(struct TAnalisis fuentes[], struct TAnalisis maxturbidez){
+	
+	int i;
+	int nelementos;
+	nelementos=ficheroStruct(fuentes);
+	
+	maxturbidez=fuentes[0];
+	for (i=0; i<nelementos; i++){
+	if (fuentes[i].turbidez > maxturbidez.turbidez){
+		maxturbidez=fuentes[i];
+		
+	}
+	}
+	
+	return maxturbidez;
+
 }
 
 //CREAMOS LA FUNCION QUE PERMITE AÑADIR UN NUEVO USUARIO
@@ -694,6 +713,11 @@ menuSistema(){
 	char nombrefic[20], nombrefichero[20],nficheros[20];
 	char texto[100], salir, lista[10]="lista.txt"; 
 	float ph, conductividad, turbidez, coliformes;
+	struct TAnalisis fuentes[200];
+	struct TAnalisis maxturbidez;
+	int nelementos;
+	int i;
+	nelementos=ficheroStruct(fuentes);
 		
 		int farandule=1;
 		int repite;
@@ -859,9 +883,31 @@ menuSistema(){
 		    		if(salir=='s'&&salir=='S'){
 		   		 			break;
 					}break;	
-			
+					
+			case 6:
 				
-			case 6 :
+				
+		   	system("cls");
+			system ("color 87");		
+			banner_fijo();
+							
+	    	printf("\tHAS ELEGIDO VER FUENTE CON MAYOR VALOR DE TURBIDEZ\n");
+	    	printf("\n\n");
+	    	do{
+									abrirficherolista(lista);
+	    	        printf("introduce el nombre del fichero que quiere mirar\n");
+	            	scanf("%s",nombrefichero);
+	            	maxturbidez=maximaturbidez(fuentes, maxturbidez);
+	    	        printf("\nFuente con mayor nivel de turbidez: %s       (%d   )", maxturbidez.nombre, maxturbidez.turbidez);
+	    	        printf("\n\n\n\tUtilice s y despues enter para volver al menu principal\n");
+		        	fflush(stdin);
+		   	     scanf("%c",&salir);
+		    		}while(salir=='s'&&salir=='S');
+		    		if(salir=='s'&&salir=='S'){
+		   		 			break;
+					}break;
+				
+			case 7 :
 		    	
 		    	farandule++;
 		    	system("cls");
@@ -882,7 +928,7 @@ menuSistema(){
 		   		 			break;
 					}break;
 			
-			case 7 :
+			case 8 :
 				
 				farandule++;
 				system("cls");
@@ -914,10 +960,7 @@ void menuInicial() {
 	
 	setlocale(LC_CTYPE,"Spanish");//CODIFICAMOS EL IDIOMA A ESPAÑOL PARA PODER UTILIZAR LETRAS COMO LA Ñ DE ESPAÑA
 	
-	struct TAnalisis fuentes[200];
-	int nelementos;
-	int i;
-	nelementos=ficheroStruct(fuentes);
+
 	
 	Usuario usuario;
 	char repite = 1;
@@ -1009,4 +1052,3 @@ int main() {
 	menuInicial();
 	return 0;
 }
-
