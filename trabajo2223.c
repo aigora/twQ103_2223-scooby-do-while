@@ -6,20 +6,18 @@
 #include <locale.h>
 #include <conio.h>
 
-#define MAX 80
 #define ARCHIVO_USUARIOS "usuarios.dat"
-#define TECLA_ENTER 13
-#define TECLA_BACKSPACE 8
-#define LONGITUD 5
-#define MAX_INTENTOS 3
 
 
 /* Estructura de cuentas de usuario */
 struct usuario {
-	char nombre[MAX];
-	char password[MAX];
+	char nombre[80];
+	char password[80];
 };
 typedef struct usuario Usuario;
+
+
+/* Estructura para los datos de los ficheros*/
 
 struct TAnalisis{
 	char nombre[200];
@@ -29,20 +27,22 @@ struct TAnalisis{
 	int coliformes;
 };
 
+
+
 /* Funciones que manipulan el archivo de usuarios */
 char insertarUsuario(Usuario usuario);
 char existeUsuario(char nombreUsuario[], Usuario *usuario);
-Usuario *obtenerUsuarios(int *);
-char logear(char nombreUsuario[], char password[]);
+
 
 int leerLinea(char *cad, int n);
 void leerClave(char *password);
 
-char linea[MAX];
+char linea[80];
 
 //funciones
 void leerficherodatos(char[]);//solo valen para leer los ficheros con estructura %s %f %f %f %f
 void escribirficherodatos(char []);//solo valen para escribir los ficheros con estructura %s %f %f %f %f
+
 
 int ficheroStruct(struct TAnalisis fuentes[]);//pasa los datos del fichero a un vector de estructuras
 
@@ -75,6 +75,15 @@ void menuRegistrarUsuario();
 
 void menuListarUsuarios();
 
+//CREAMOS LA FUNCION QUE PERMITE AÃ‘ADIR UN NUEVO USUARIO
+
+
+void menuRegistrarUsuario();
+
+//CREAMOS LA FUNCION QUE DEJA VER LOS USUARIOS REGISTRADOS
+
+void menuListarUsuarios();
+
 
 
 //Introducimos la funcion que controla el menu
@@ -88,46 +97,135 @@ char insertarUsuario(Usuario usuario);
 /* Retorna 1 si existe el nombre de usuario. Retorna el usuario buscado si existe */
 char existeUsuario(char nombreUsuario[], Usuario* usuario);
 
-Usuario *obtenerUsuarios(int *n);
 
-/* Retorna 1 o 0 si el usuario y password son correctos para un usuario en particular */
-char logear(char nombreUsuario[], char password[]);
+
+
+
+int banner(){
+			printf("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
+	char banner[]={"*-*-*-*-*-*-*-*-*-*-*-{ KUNFONT }-*-*-*-*-*-{ KUNFONT }-*-*-*-*-{ KUNFONT }-*-*-*-*-*-*-*-*-*-*-*"};
+	unsigned short longitud, indice, espacio, repite, resto;
+
+	//A CONTINUACION SE PROGRAMA EL BANNER
+ 
+	longitud=strlen(banner);
+	for (repite=1; repite<=3; repite++) /* repite el proceso 3 veces */
+	{
+		// *** IMPRIME EN ORDEN DE IZQUIERDA A DERECHA Y LUEGO DESPLAZA *** 
+		for(resto=0; resto<=longitud; resto++) // para caracteres restantes a imprimir 
+		{	for (indice=0; indice<=longitud-1-resto; indice++) // seleccion de indices evitando restantes 
+			{
+				printf("%c", banner[indice]); // imprime indice 
+				if (!resto) usleep(300); // demora el proceso 
+			}
+			for(espacio=1; espacio<=longitud-resto-1; espacio++)
+				printf("\b"); // retrocede 
+ 
+			if (resto) usleep(300); // demora el proceso 
+			printf("\b "); // borra el caracter actual 
+		}
+ 
+		for(espacio=1; espacio<=longitud; espacio++) // borra todos los caracteres presentados 
+			printf("\b\b ");
+		printf("\b"); // se coloca al inicio del desplegado
+	}
+	printf("*-*-*-*-*-*-*-*-*-*-{ KUNFONT }-*-*-*-*-*-*-*-*-*-{ KUNFONT }-*-*-*-*-*-*-*-*-*{ KUNFONT }-*-*-*-*-*-*\n");
+	printf("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
 	
-int leerLinea(char *cad, int n);
-
-void leerClave(char *password);
-
-
-//Introducimos las funciones que nos dejan leer y escribir sobre el fichero de los usuarios
-
-
-void leerficherodatos(char nombrefichero[]);
-void escribirficherodatos(char nombrefic[]);
-	
-	
-menuSistema();
-
-
-
-
-//INTRODUCIMOS LA FUNCION QUE CODIFICA EL MENU PRINCIPAL
-
-
-
-
-
-void menuInicial();
-
-// CREAMOS EL PROGRAMA
-
-int main() {
-	struct TAnalisis fuentes[200];
-	int nelementos;
-	int i;
-	nelementos=ficheroStruct(fuentes);
-	menuInicial();
-	return 0;
 }
+
+//INTRODUCIMOS LA FUNCIÓN DE UN BANNER FIJO 
+
+int banner_fijo(){
+	printf("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
+	printf("*-*-*-*-*-*-*-*-*-*-{ KUNFONT }-*-*-*-*-*-*-*-*-*-{ KUNFONT }-*-*-*-*-*-*-*-*-*{ KUNFONT }-*-*-*-*-*-*\n");
+	printf("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
+	
+}
+
+//INTRODUCIMOS LA FUNCIÓN DE OTRO BANNER FIJO  DISTINTO
+
+int banner2(){
+
+	printf("\n\t     ========================================================================================\n");
+	printf("\t\t\t     BIENVENIDO A KUNFONT, TU COMPARADOR DE AGUAS DE CONFIANZA\n");
+	printf("\t\t\tPuede consultar y añadir: datos y fuentes del distrito de Lavapies\n");
+	printf("\t\t\t                Elija que desea realizar\n");
+	printf("\t     ========================================================================================\n");
+	
+		printf("\n\t\t[1].REGISTRAR NUEVO FICHERO CON DATOS DE FUENTES NUEVAS\n");
+		printf("\t\t[2]. CONSULTAR LOS DATOS DE AGUAS DEL DISTRITO DE LAVAPIES U OTROS FICHEROS YA CREADOS\n");
+		printf("\t\t[3]. ORDENAR FICHERO POR CONDUCTIVIDAD\n");	
+		printf("\t\t[4]. ORDENAR FICHERO POR ACIDEZ\n");		
+		printf("\t\t[5]. MEDIA DE LOS PARAMETROS DEL FICHERO\n");
+		printf("\t\t[6]. AYUDA E INSTRUCCIONES\n");
+		printf("\t\t[7]. SALIR AL MENU PRINCIPAL Y CERRAR SESION\n");
+		printf("\n\t\tIngrese su opcion: [ ]\b\b");	
+}
+
+//Introducimos una funcion que ofrece informacion
+
+void normativa(){
+			printf("\n");
+			printf("\n");
+	    	printf("\tNORMATIVA LEGAL DE LA PAGINA:\n\n");
+	        printf("\tPara consultar los datos de la red de aguas del distrito madrileño seleccionado, debes regristrarte o iniciar \n\tsesion si ya tienes una cuenta.\n\n");
+			printf("\tLos datos recogidos en la pagina proceden de la red publica de aguas del canal de Isabel II de Madrid, ofrecida \n\tpor el ayuntamiento de la capital.\n\n");
+		    printf("\tPara cualquier duda acerca del acceso a la web o del uso de los datos de la misma puede escribir al correo de \n\tnuestro equipo de marketing:\n \t\t jorge.escobar@alumnos.upm.es \n\n");
+		    printf("\tRespetando la Ley mencionada anteriormente, los datos introducidos por los usuarios de la pagina seran tratados \n\tde manera interna y no se difundiran de ninguna manera, siendo utilizados tan solo para labores de control de la\n\tconsulta del sistema y sus datos.\n");
+			printf("\n");
+			printf("\tGracias por su atencion, si posee alguna duda puede llamar al telefono del equipo tecnico: 666 46 52 88\n ");
+			printf("\n");
+			printf("\n");
+	
+}
+
+//Introducimos otra funcion que ofrece informacion
+
+void aguascaracteristicasdefiniciones(){
+			printf("\n");
+			printf("\n");
+	    	printf("\tCARACTERISTICAS ESTUDIADAS Y MOSTRADAS POR KUNFONT\n");
+	        printf("\t\t[1].PH\n");
+	        printf("\t\t\tEl pH es una medida de la acidez o basicidad de una solucion. El termino pH proviene 	\n");
+			printf("\t\t\tdel potencial de hidrogeno y se refiere a la concentracion de iones de hidrogeno (H+) \n");
+			printf("\t\t\tpresentes en una solucion. El pH se expresa en una escala numerica que va desde 0 a 	\n");
+			printf("\t\t\t14, donde 0 indica una solucion altamente acida, 7 indica una solucion neutra y 14 	\n");
+			printf("\t\t\tindica una solucion altamente basica o alcalina.	\n");
+			printf("\t\t\t	\n");
+			printf("\t\t[2].TURBIDEZ\n");
+			printf("\t\t\tLa turbidez se refiere a la medida de la falta de transparencia o claridad de un liquido 	\n");
+			printf("\t\t\tdebido a la presencia de particulas suspendidas en el. Es una propiedad optica que 	\n");
+			printf("\t\t\tdescribe la dispersion y el bloqueo de la luz cuando pasa a traves de un medio turbio.	\n");
+			printf("\t\t\t	\n");
+			printf("\t\t\tCuando un liquido está turbio, significa que contiene particulas solidas o materia 	\n");
+			printf("\t\t\tsuspendida que no se disuelven por completo en el medio. Estas particulas pueden 	\n");
+			printf("\t\t\tincluir particulas de polvo, sedimentos, microorganismos, algas, materia organica en 	\n");
+			printf("\t\t\tdescomposicion u otras sustancias suspendidas.	\n");
+			printf("\t\t\t	\n");
+		    printf("\t\t[3].COLIFORME\n");
+		    printf("\t\t\tLos coloides son sistemas dispersos formados por particulas pequeñas, denominadas 	\n");
+			printf("\t\t\tcoloides o particulas coloidales, dispersas en un medio continuo. Estas particulas 	\n");
+			printf("\t\t\ttienen un tamaño mayor que las moleculas individuales pero son mucho mas pequeñas 	\n");
+			printf("\t\t\tque las particulas visibles a simple vista. La dispersion coloidal se produce cuando estas 	\n");
+			printf("\t\t\tpartículas se encuentran suspendidas o dispersas en un líquido, un gas o incluso en un 	\n");
+			printf("\t\t\tsolido.	\n");
+			printf("\t\t\t	\n");
+		    printf("\t\t[4].CONDUCTIVIDAD\n");
+		    printf("\t\t\tLa conductividad de una disolucion se refiere a su capacidad para conducir la corriente 	\n");
+	        printf("\t\t\telectrica. Es una medida de la facilidad con la que los iones o las particulas cargadas 	\n");
+	        printf("\t\t\tpresentes en la disolucion pueden moverse y transportar carga electrica. Cuando una	\n");
+	        printf("\t\t\tsustancia se disuelve en agua u otro solvente, puede ionizarse, es decir, liberar iones 	\n");
+	        printf("\t\t\tpositivos (cationes) y/o iones negativos (aniones) en la disolucion. Estos iones son 	\n");
+	        printf("\t\t\tresponsables de la conductividad electrica de la disolucion.	\n");
+	        printf("\t\t\t	\n");
+			printf("\n");
+			printf("Gracias por su atencion, si posee alguna duda puede llamar al telefono del equipo tecnico informativo: 644 24 06 08\n ");
+			printf("\n");
+			printf("\n");
+	
+}
+
 
 int ficheroStruct(struct TAnalisis fuentes[]){
 	
@@ -149,76 +247,16 @@ int ficheroStruct(struct TAnalisis fuentes[]){
     
     return i;
 }
-int banner(){
-			printf("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
-	char banner[]={"*-*-*-*-*-*-*-*-*-*-*-{ KUNFONT }-*-*-*-*-*-{ KUNFONT }-*-*-*-*-{ KUNFONT }-*-*-*-*-*-*-*-*-*-*-*"};
-	unsigned short longitud, indice, espacio, repite, resto;
 
-	//A CONTINUACION SE PROGRAMA EL BANNER
- 
-	longitud=strlen(banner);
-	for (repite=1; repite<=2; repite++) /* repite el proceso 3 veces */
-	{
-		// *** IMPRIME EN ORDEN DE IZQUIERDA A DERECHA Y LUEGO DESPLAZA *** 
-		for(resto=0; resto<=longitud; resto++) // para caracteres restantes a imprimir 
-		{	for (indice=0; indice<=longitud-1-resto; indice++) // seleccion de indices evitando restantes 
-			{
-				printf("%c", banner[indice]); // imprime indice 
-				if (!resto) usleep(1250); // demora el proceso 
-			}
-			for(espacio=1; espacio<=longitud-resto-1; espacio++)
-				printf("\b"); // retrocede 
- 
-			if (resto) usleep(1750); // demora el proceso 
-			printf("\b "); // borra el caracter actual 
-		}
- 
-		for(espacio=1; espacio<=longitud; espacio++) // borra todos los caracteres presentados 
-			printf("\b\b ");
-		printf("\b"); // se coloca al inicio del desplegado
-	}
-	printf("*-*-*-*-*-*-*-*-*-*-{ KUNFONT }-*-*-*-*-*-*-*-*-*-{ KUNFONT }-*-*-*-*-*-*-*-*-*{ KUNFONT }-*-*-*-*-*-*\n");
-	printf("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
-	
-}
-int banner_fijo(){
-	printf("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
-	printf("*-*-*-*-*-*-*-*-*-*-{ KUNFONT }-*-*-*-*-*-*-*-*-*-{ KUNFONT }-*-*-*-*-*-*-*-*-*{ KUNFONT }-*-*-*-*-*-*\n");
-	printf("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
-	
-}
-void normativa(){
-			printf("\n");
-			printf("\n");
-	    	printf("NORMATIVA LEGAL DE LA PAGINA:\n");
-	        printf("Para consultar los datos de la red de aguas del distrito madrileÃ±o seleccionado, debes regristrarte o iniciar sesion si ya tienes una cuenta.\n");
-			printf("Los datos recogidos en la pagina proceden de la red publica de aguas del canal de Isabel II de Madrid, ofrecida por el ayuntamiento de la capital.\n");
-		    printf("Para cualquier duda acerca del acceso a la web o del uso de los datos de la misma puede escribir al correo de nuestro equipo de marketing:/n jorge.escobar@alumnos.upm.es n");
-		    printf("Respetando la Ley mencionada anteriormente, los datos introducidos por los usuarios de la pagina seran tratados de manera interna y no se difundiran /n de ninguna manera, siendo utilizados tan solo para labores de control de la consulta del sistema y sus datos.\n");
-			printf("\n");
-			printf("Gracias por su atencion, si posee alguna duda puede llamar al telefono del equipo tecnico: 666 46 52 88\n ");
-			printf("\n");
-			printf("\n");
-	
-}
-void aguascaracteristicasdefiniciones(){
-			printf("\n");
-			printf("\n");
-	    	printf("CARACTERISTICAS ESTUDIADAS\n");
-	        printf("PH\n");
-			printf("TURBIDEZ\n");
-		    printf("COLIFORME n");
-		    printf("Conductividad\n");
-			printf("\n");
-			printf("Gracias por su atencion, si posee alguna duda puede llamar al telefono del equipo tecnico informativo: 644 24 06 08\n ");
-			printf("\n");
-			printf("\n");
-	
-}
+//CREAMOS LA FUNCION QUE PERMITE AÑADIR UN NUEVO USUARIO
+
+
 void menuRegistrarUsuario() {
+	
+	int MAX=80;
 	Usuario usuario;
-	char nombreUsuario[MAX];
-	char respuesta[MAX];
+	char nombreUsuario[80];
+	char respuesta[80];
 	char repite = 1;
 	
 	do {
@@ -242,7 +280,7 @@ void menuRegistrarUsuario() {
 
 			} else {
 				printf("\n\tOcurrio un error al registrar el usuario\n");
-				printf("\nIntÃ©ntelo mas tarde\n");
+				printf("\nInténtelo mas tarde\n");
 			}
 		} else {
 			printf("\n\tEl usuario \"%s\" ya ha sido registrado previamente\n", usuario.nombre);
@@ -258,47 +296,59 @@ void menuRegistrarUsuario() {
 
 	} while (repite == 1);
 }
+
+//CREAMOS LA FUNCION QUE DEJA VER LOS USUARIOS REGISTRADOS
 void menuListarUsuarios() {
-	int numeroUsuarios;
-	Usuario *usuarios;
-	int i;
+	int MAX_USUARIOS=200;
+    int numeroUsuarios;
+    Usuario usuarios[MAX_USUARIOS];
+    int i;
 
-	system("cls");
-	usuarios = obtenerUsuarios(&numeroUsuarios); /* Retorna un vector dinÃ¡mico de usuarios */
+    system("cls");
+    obtenerUsuarios(usuarios, &numeroUsuarios); /* Obtiene los usuarios y actualiza el número de usuarios */
 
-	if (numeroUsuarios == 0) {
-		printf("\n\tNo existe ningun usuario registrado!\n");
+    if (numeroUsuarios == 0) {
+        printf("\n\tNo existe ningun usuario registrado!\n");
+    } else {
+        printf("\n\t\t    ==> LISTADO DE PERSONAS REGISTRADAS <==\n");
+        printf(" ------------------------------------------------------------------------------\n");
+        printf("%10s%25s%25s\n", "#", "NOMBRE", "CONTRASEÑA");
+        printf(" ------------------------------------------------------------------------------\n");
 
-	} else {
-		printf("\n\t\t    ==> LISTADO DE PERSONAS REGISTRADAS <==\n");
-		printf(" ------------------------------------------------------------------------------\n");
-		printf("%10s%25s%25s\n", "#", "NOMBRE", "CONTRASEÃ‘A");
-		printf(" ------------------------------------------------------------------------------\n");
+        /* Se recorre el arreglo de usuarios */
+        for (i = 0; i < numeroUsuarios; i++) {
+            printf("%10d%25s%25s\n", (i + 1), usuarios[i].nombre, usuarios[i].password);
+        }
+        printf(" ------------------------------------------------------------------------------\n");
+    }
 
-		/* Se recorre el vector dinÃ¡mico de productos */
-		for (i = 0; i < numeroUsuarios; i++) {
-			printf("%10d%25s%25s\n", (i + 1), usuarios[i].nombre, usuarios[i].password);
-		}
-		printf(" ------------------------------------------------------------------------------\n");
-	}
-
-	// Se libera la memoria asignada al vector dinÃ¡mico
-	free(usuarios);
-	usuarios = NULL;
-	getchar();
+    getchar();
 }
+
+
+
+
+//Introducimos la funcion que controla el menu
+
 void menuIniciarSesion() {
 	
-	
+	int MAX=80;
+	int MAX_INTENTOS=3;
 	char nombreUsuario[MAX];
 	char password[MAX];
 	int intento = 0;
 	int loginExitoso = 0;
+	int intentosrestantes;
+	
 
 	do {
+		intentosrestantes=MAX_INTENTOS-intento;
+		banner_fijo();
 		system("cls");
-		printf("\n\t\t\tINGRESAR AL SISTEMA\n");
-		printf("\t\t\t===================\n");
+		printf("\n\t\t\t==========================================\n");	
+		printf("\t\t\t============INGRESAR AL SISTEMA===========\n");
+		printf("\t\t\t==========================================\n");
+		printf("\t\t\tTienes %d intentos para acceder al sistema\n",intentosrestantes);
 
 		printf("\n\t\tUSUARIO: ");
 		leerLinea(linea, MAX);
@@ -324,11 +374,14 @@ void menuIniciarSesion() {
 		getchar();
 	}
 }
+
+
+/* Retorna 1 si se registró el usuario en el archivo correctamente */
 char insertarUsuario(Usuario usuario){
 	FILE *archivo;
 	char insercion = 0;
 
-	/* Abre el archivo en modo de aÃ±adidura, para agregar datos al final. Si no existe es creado*/
+	/* Abre el archivo en modo de añadidura, para agregar datos al final. Si no existe es creado*/
 	archivo = fopen(ARCHIVO_USUARIOS, "ab");
 
 	if (archivo == NULL) {
@@ -345,6 +398,8 @@ char insertarUsuario(Usuario usuario){
 
 	return insercion;
 }
+
+/* Retorna 1 si existe el nombre de usuario. Retorna el usuario buscado si existe */
 char existeUsuario(char nombreUsuario[], Usuario* usuario){
 	FILE *archivo;
 	char existe;
@@ -376,126 +431,75 @@ char existeUsuario(char nombreUsuario[], Usuario* usuario){
 
 	return existe;
 }
-Usuario *obtenerUsuarios(int *n) {
+
+
+int obtenerUsuarios(Usuario usuarios[], int *n) {
 	FILE *archivo;
 	Usuario usuario;
-	Usuario *usuarios; /* Vector dinÃ¡mico de usuarios */
-	int i;
 
-	/* Abre el archivo en modo lectura */
 	archivo = fopen(ARCHIVO_USUARIOS, "rb");
- 
-	if (archivo == NULL) { /* Si no se pudo abrir el archivo, el valor de archivo es NULL */
-		*n = 0; /* No se pudo abrir. Se considera n = 0 */
-		usuarios = NULL;
- 
+	
+	if (archivo == NULL) {
+		*n = 0;
 	} else {
- 
-		fseek(archivo, 0, SEEK_END); /* Posiciona el cursor al final del archivo */
-		*n = ftell(archivo) / sizeof(Usuario); /* # de usuarios almacenados en el archivo. (# de registros) */
-		usuarios = (Usuario *)malloc((*n) * sizeof(Usuario)); /* Se asigna memoria para todos los usuarios almacenados en el archivo */
- 
-		/* Se recorre el archivo secuencialmente */
-		fseek(archivo, 0, SEEK_SET); /* Posiciona el cursor al principio del archivo */
-		fread(&usuario, sizeof(usuario), 1, archivo);
-		i = 0;
-		while (!feof(archivo)) {
-			usuarios[i++] = usuario;
-			fread(&usuario, sizeof(usuario), 1, archivo);
+		*n = 0;
+		while (fread(&usuario, sizeof(usuario), 1, archivo) != 0) {
+			usuarios[(*n)++] = usuario;
 		}
- 
-		/* Cierra el archivo */
 		fclose(archivo);
 	}
- 
-	return usuarios;
 }
-char logear(char nombreUsuario[], char password[]) {
+
+int logear(char nombreUsuario[], char password[]) {
 	FILE *archivo;
 	char logeoExitoso;
 	Usuario usuario;
 
-	/* Abre el archivo en modo de lectura */
 	archivo = fopen(ARCHIVO_USUARIOS, "rb");
 
 	if (archivo == NULL) {
 		logeoExitoso = 0;
-
 	} else {
 		logeoExitoso = 0;
 
-		/* Lee secuencialmente del archivo de usuarios */
-		fread(&usuario, sizeof(usuario), 1, archivo);
-		while (!feof(archivo)) {
+		while (fread(&usuario, sizeof(usuario), 1, archivo) != 0) {
 			if (strcmp(usuario.nombre, nombreUsuario) == 0 && strcmp(usuario.password, password) == 0) {
-				/* Encuentra un usuario del archivo con el nombre de usuario y password buscado */
 				logeoExitoso = 1;
 				break;
 			}
-
-			fread(&usuario, sizeof(usuario), 1, archivo);
 		}
-
-		/* Cierra el archivo*/
 		fclose(archivo);
 	}
 
 	return logeoExitoso;
 }
-int leerLinea(char *cad, int n)
-{
-	int i, c;
 
-	/* 1 COMPROBACIÃ“N DE DATOS INICIALES EN EL BUFFER */
-	c = getchar();
-	if (c == EOF) {
-		cad[0] = '\0';
-		return 0;
-	}
-
-	if (c == '\n') {
-		i = 0;
-	} else {
-		cad[0] = c;
-		i = 1;
-	}
-
-	/* 2. LECTURA DE LA CADENA */
-	for (; i < n - 1 && (c = getchar()) != EOF && c != '\n'; i++) {
-		cad[i] = c;
-	}
-	cad[i] = '\0';
-
-	/*3. LIMPIEZA DEL BUFFER */ 
-	if (c != '\n' && c != EOF) /* es un caracter */
-		while ((c = getchar()) != '\n' && c != EOF);
- 
-	return 1;
+int leerLinea(char *cad, int n) {
+    fgets(cad, n, stdin);
+    cad[strcspn(cad, "\n")] = '\0';  // Eliminar el carácter de nueva línea
+    return strlen(cad);
 }
+
 void leerClave(char *password) {
-	char caracter;
-	int i = 0;
-
-	while (caracter = getch()) {
-		if (caracter == TECLA_ENTER) {
-			password[i] = '\0';
-			break;
-			
-		} else if (caracter == TECLA_BACKSPACE) {
-			if (i > 0) {
-				i--;
-				printf("\b \b");
-			}
-			
-		} else {
-			if (i < MAX) {
-				printf("*");
-				password[i] = caracter;
-				i++;
-			}
-		}
-	}
+    char c;
+    int i = 0;
+    while ((c = getch()) != '\r') {  // Leer caracteres hasta que se presione Enter ('\r')
+        if (c == 8 && i > 0) {  // Si se presiona Retroceso (8) y hay caracteres ingresados
+            printf("\b \b");  // Borrar el carácter de la consola
+            password[--i] = '\0';  // Eliminar el último carácter
+        } else if (c != 8) {  // Si se ingresa un carácter válido
+            putchar('*');  // Imprimir '*' en lugar del carácter ingresado
+            password[i++] = c;  // Almacenar el carácter 
+        }
+    }
+    printf("\n");
+    password[i] = '\0';  // Agregar el carácter nulo al final 
 }
+
+
+//Introducimos las funciones que nos dejan leer y escribir sobre el fichero de los usuarios
+
+
 void leerficherodatos(char nombrefichero[]){
 	
 	
@@ -535,6 +539,7 @@ void escribirficherodatos(char nombrefic[]){
 			fprintf(fsalida,"%s\t %2.f %2.f %2.f %2.f\n", nfuentes, ph, conductividad, turbidez, coliformes);
 			fclose(fsalida);
 }
+
 
 void abrirficherolista(char lista[]){
 	char nombrefic[20], nombrefichero[20],nficheros[20];
@@ -680,15 +685,17 @@ void ordenarph(char nombrefichero[]){
         }
 
 				}
-
+	
+	
 menuSistema(){
-	struct TAnalisis fuentes[200];
 		
+	int MAX=80;	
 	int opcionMenu;
 	char nombrefic[20], nombrefichero[20],nficheros[20];
 	char texto[100], salir, lista[10]="lista.txt"; 
 	float ph, conductividad, turbidez, coliformes;
 		
+		int farandule=1;
 		int repite;
 		repite=1;
 		
@@ -697,34 +704,27 @@ menuSistema(){
 	
 	system("cls");
 	system("color E0");
-	banner_fijo();
-	printf("\n     =========================================================================\n");
-	printf("\t\t\t     BIENVENIDO A KUNFONT, TU COMPARADOR DE AGUAS DE CONFIANZA\n");
-	printf("\t\t\tPuede consultar y aÃ±adir: datos y fuentes del distrito de Lavapies\n");
-	printf("\t\t\t                Elija que desea realizar\n");
-	printf("     =========================================================================\n");
-	
-		printf("\n\t\t[1].REGISTRAR NUEVO FICHERO CON DATOS DE FUENTES NUEVAS\n");
-		printf("\t\t[2]. CONSULTAR LOS DATOS DE AGUAS DEL DISTRITO DE LAVAPIES U OTROS FICHEROS YA CREADOS\n");
-		printf("\t\t[3]. AYUDA E INSTRUCCIONES\n");
-		printf("\t\t[4]. ORDENAR FICHERO POR CONDUCTIVIDAD\n");	
-		printf("\t\t[5]. ORDENAR FICHERO POR ACIDEZ\n");		
-		printf("\t\t[6]. MEDIA DE LOS PARAMETROS DEL FICHERO\n");
-		printf("\t\t[7]. SALIR AL MENU PRINCIPAL Y CERRAR SESION\n");
-		printf("\n\t\tIngrese su opcion: [ ]\b\b");
+	if(farandule==1){
+			banner();
+			banner2();
+		}else{
+		banner_fijo();
+		banner2();
+		}
 	
 		leerLinea(linea, MAX);
 		sscanf(linea, "%d", &opcion2);
 		
 		switch (opcion2) {
 			case 1:
+				farandule++;
 				system("cls");		
 				banner_fijo();
 				
-					printf("introduce como quieres llamar al archivo fichero (acuerdese de acabarlo con el formato .txt)\n");
+					printf("\n\tintroduce como quieres llamar al archivo fichero (acuerdese de acabarlo con el formato .txt)\n");
 		    scanf("%s", nombrefic);
 		    escribirficherodatos(nombrefic);
-	        printf("Comprobacion del fichero\n");
+	        printf("\tComprobacion del fichero\n");
 		    leerficherodatos(nombrefic);
             
             //meter en un fichero llamado listadeficheros todos los ficheros introducidos;
@@ -751,22 +751,37 @@ menuSistema(){
 				
 				
 			case 2:
+				farandule++;
 				system("cls");		
 				banner_fijo();
 				
 					//leer el fichero con los fichero que existen 
-	    	printf("HAS ELEGIDO REVISAR FICHEROS SUBIDOS\n");
+	    	printf("HAS ELEGIDO REVISAR LA INFORMACION DE AGUAS DE LAVAPIES\n");
+	    	fflush(stdin);
+	    	printf("Estos son los ficheros creados\n");
 	    	
-	        abrirficherolista(lista);
+	    	FILE *flista;
+	        flista = fopen("lista.txt","r");
+        	    if (flista == NULL) {
+	    	        printf("Error\n");
+	        	    return 0;	
+	            }
+	            fflush(stdin);
+            while(fscanf(flista,"%s",nficheros)!=EOF){
+							printf("%s\n",nficheros);
+							fflush(stdin);
+			}
+			fclose(flista);
+            fflush(stdin);
             
 	    	//leer el fichero que quieras
 	    	
-	    	printf("introduce el nombre del fichero que quiere mirar\n");
+	    	printf("Introduzca el nombre del fichero que quiere mirar:\n");
 	    	scanf("%s",nombrefichero);
 	    	leerficherodatos(nombrefichero);
 		    printf("\n\n\n");
 		     do{
-		        printf("Utilice s y dspues enter para volver al menu principal\n");
+		        printf("Utilice s y despues enter para volver al menu principal:\n");
 		        fflush(stdin);
 		        scanf("%c",&salir);
 		    	}while(salir=='s'&&salir=='S');
@@ -774,27 +789,8 @@ menuSistema(){
 		    			break;
 				} break;		
 				
-				
-			case 3 :
-		    	
-		    	system("cls");
-				system ("color 87");		
-				banner_fijo();
-				
-	    		printf("\tHAS ELEGIDO INSTRUCCIONES Y AYUDA DENTRO\n");
-		    	printf("\n\n");
-		  	   do{
-			        printf("\tBienvenido a Kunfont!! \n\tEste programa consiste en un algoritmo para guardar los ficheros de los datdos de diferentes analisis\n");
-			        printf("\tde agua.La opcion 1 en el menu menu de Lavapies, sirve para registrar ficheros con datos de experimentos \n\t nuevos.Ademas, podemos consultar datos ya existentes en ficheros ya creados desde la opcion 2.Al introducir un fichero nuevo\n");
-		    	    printf("\teste se regsitrara en un fichero que almacena todos los ficheros previamente registrados.\n");
-		    	    printf("\n\n\n\tUtilice s y despues enter para volver al menu principal\n");
-		        	fflush(stdin);
-		   	     scanf("%c",&salir);
-		    		}while(salir=='s'&&salir=='S');
-		    		if(salir=='s'&&salir=='S'){
-		   		 			break;
-					}break;
-			case 4:
+			
+			case 3:
 				
 				
 		    	system("cls");
@@ -818,7 +814,7 @@ menuSistema(){
 		   		 			break;
 					}break;
 			
-			case 5:
+			case 4:
 				
 				
 		   	system("cls");
@@ -841,7 +837,7 @@ menuSistema(){
 		   		 			break;
 					}break;
 			
-            case 6:
+            case 5:
 				
 				system("cls");
 				system ("color 87");		
@@ -862,17 +858,39 @@ menuSistema(){
 		    		}while(salir=='s'&&salir=='S');
 		    		if(salir=='s'&&salir=='S'){
 		   		 			break;
-					}break;
-
+					}break;	
 			
-			case 7:
 				
+			case 6 :
+		    	
+		    	farandule++;
+		    	system("cls");
+				system ("color 87");		
+				banner_fijo();
+				
+	    		printf("\n\tHAS ELEGIDO INSTRUCCIONES Y AYUDA DENTRO\n");
+		    	printf("\n\n");
+		  	   do{
+			        printf("\tBienvenido a Kunfont!! \n\tEste programa consiste en un algoritmo para guardar los ficheros de los datdos de diferentes analisis\n");
+			        printf("\tde agua.\n\tLa opcion 1 en el menu de KUNFONT, sirve para registrar ficheros con datos de experimentos \n\tnuevos.\n\tAdemas, podemos consultar datos ya existentes en ficheros ya creados desde la opcion 2.\n\tAl introducir un fichero nuevo");
+		    	    printf("este se regsitrara en un fichero que almacena todos los ficheros previamente\n\tregistrados.\n");
+		    	    printf("\n\n\n\tUtilice s y despues enter para volver al menu principal\n");
+		        	fflush(stdin);
+		   	     scanf("%c",&salir);
+		    		}while(salir=='s'&&salir=='S');
+		    		if(salir=='s'&&salir=='S'){
+		   		 			break;
+					}break;
+			
+			case 7 :
+				
+				farandule++;
 				system("cls");
 				system("color 87");		
 				banner_fijo();
 				printf("\n");
 				printf("\tGRACIAS POR UTILIZAR NUESTRA APLICACION!!!\n");
-				printf("\tSu sesiÃ³n en kunfont ha sido cerrada\n");
+				printf("\tSu sesión en kunfont ha sido cerrada\n");
 				printf("\tPulse enter para volver al menu principal\n");
 				
 				repite= 0;		
@@ -882,12 +900,28 @@ menuSistema(){
 		} while (repite == 1);
 	getchar();
 }	
+
+
+
+
+//INTRODUCIMOS LA FUNCION QUE CODIFICA EL MENU PRINCIPAL
+
+
+
+
+
 void menuInicial() {
 	
-	setlocale(LC_CTYPE,"Spanish");//CODIFICAMOS EL IDIOMA A ESPAÃ‘OL PARA PODER UTILIZAR LETRAS COMO LA Ã‘ DE ESPAÃ‘A
+	setlocale(LC_CTYPE,"Spanish");//CODIFICAMOS EL IDIOMA A ESPAÑOL PARA PODER UTILIZAR LETRAS COMO LA Ñ DE ESPAÑA
+	
+	struct TAnalisis fuentes[200];
+	int nelementos;
+	int i;
+	nelementos=ficheroStruct(fuentes);
 	
 	Usuario usuario;
 	char repite = 1;
+	int MAX=80;
 	int opcion = -1;
 	int farandul;
 	farandul=1;
@@ -907,7 +941,7 @@ void menuInicial() {
 		printf("\t\t\tMENU PRINCIPAL\n");
 		printf("\n\t\t[1]. Ver usuarios registrados\n");
 		printf("\t\t[2]. Registrar usuario nuevo\n");
-		printf("\t\t[3]. Consultar datos de Aguas de LAVAPIES\n");
+		printf("\t\t[3]. Acceder al servico de KUNFONT\n");
 		printf("\t\t[4]. Normativa Legal de la web\n");
 		printf("\t\t[5]. A cerca de los datos recogidos\n");
 		printf("\t\t[0]. Salir\n");
@@ -961,11 +995,18 @@ void menuInicial() {
 			case 0:
 				system("cls");		
 				banner_fijo();
-				printf("HASTA PRONTO!!\n");
+				printf("\n\n\t\tHASTA PRONTO!!\n");
 				repite = 0;
 				break;
 		}
 
 	} while (repite == 1);
+}
+
+// CREAMOS EL PROGRAMA
+
+int main() {
+	menuInicial();
+	return 0;
 }
 
