@@ -50,7 +50,8 @@ void abrirficherolista(char []);
 float media(char nombrefichero[]);
 void ordenarconductividad(char nombrefichero[]);
 void ordenarph(char nombrefichero[]);
-struct TAnalisis maximaturbidez(struct TAnalisis fuentes[], struct TAnalisis maxturbidez);
+void maximaturbidez(struct TAnalisis fuentes[], struct TAnalisis maxturbidez, char nombrefichero[]);
+struct TAnalisis fuentescoliformes(struct TAnalisis fuentes[], char nombrefichero[]);
 
 int banner();
 
@@ -159,8 +160,9 @@ int banner2(){
 		printf("\t\t[4]. ORDENAR FICHERO POR ACIDEZ\n");		
 		printf("\t\t[5]. MEDIA DE LOS PARAMETROS DEL FICHERO\n");
 		printf("\t\t[6]. VALOR DE FUENTE CON MAYOR NIVEL DE TURBIDEZ\n");
-		printf("\t\t[7]. AYUDA E INSTRUCCIONES\n");
-		printf("\t\t[8]. SALIR AL MENU PRINCIPAL Y CERRAR SESION\n");
+		printf("\t\t[7]. FUENTES CON COLIFORMES\n");
+		printf("\t\t[8]. AYUDA E INTRUCCIONES\n");
+		printf("\t\t[9]. SALIR AL MENU PRINCIPAL Y CERRAR SESION\n");
 		printf("\n\t\tIngrese su opcion: [ ]\b\b");	
 }
 
@@ -249,24 +251,80 @@ int ficheroStruct(struct TAnalisis fuentes[]){
     return i;
 }
 
-struct TAnalisis maximaturbidez(struct TAnalisis fuentes[], struct TAnalisis maxturbidez){
+void maximaturbidez(struct TAnalisis fuentes[], struct TAnalisis maxturbidez, char nombrefichero[]){
 	
-	int i;
-	int nelementos;
-	nelementos=ficheroStruct(fuentes);
+		  
+	  int contador=0, i=0, j;
+	  
+	  char titulo[10], titulo2[10], titulo3[10], titulo4[10], titulo5[10];
+	
+	 FILE *fsalida1;
+	        fsalida1 = fopen(nombrefichero,"r");
+        	if (fsalida1 == NULL) {
+	    	    printf("Error, no puede leer el fichero.\n");	
+	        }
+	        
+	        fscanf(fsalida1,"%s %s %s %s %s",titulo, titulo2, titulo3, titulo4, titulo5);
+	          
+	        fflush(stdin);
+            while(fscanf(fsalida1,"%s %f %f %f %f", fuentes[i].nombre, &fuentes[i].ph ,&fuentes[i].conductividad, &fuentes[i].turbidez, &fuentes[i].coliformes)!=EOF){
+		      
+		      
+				contador++; 
+				i++;
+			
+					}
+					fclose(fsalida1);
+
 	
 	maxturbidez=fuentes[0];
-	for (i=0; i<nelementos; i++){
+	for (i=0; i<contador; i++){
 	if (fuentes[i].turbidez > maxturbidez.turbidez){
 		maxturbidez=fuentes[i];
 		
 	}
 	}
 	
-	return maxturbidez;
+	printf("Fuente con mayor nivel de turbidez: %s  ", maxturbidez.nombre);
 
 }
 
+struct TAnalisis fuentescoliformes(struct TAnalisis fuentes[], char nombrefichero[]){
+	int contador=0, i=0, j;
+	struct TAnalisis numcoliformes; 
+	  
+	  char titulo[10], titulo2[10], titulo3[10], titulo4[10], titulo5[10];
+	
+	 FILE *fsalida1;
+	        fsalida1 = fopen(nombrefichero,"r");
+        	if (fsalida1 == NULL) {
+	    	    printf("Error, no puede leer el fichero.\n");	
+	        }
+	        
+	        fscanf(fsalida1,"%s %s %s %s %s",titulo, titulo2, titulo3, titulo4, titulo5);
+	          
+	        fflush(stdin);
+            while(fscanf(fsalida1,"%s %f %f %f %f", fuentes[i].nombre, &fuentes[i].ph ,&fuentes[i].conductividad, &fuentes[i].turbidez, &fuentes[i].coliformes)!=EOF){
+		      
+		      
+				contador++; 
+				i++;
+			
+					}
+					fclose(fsalida1);
+
+	
+	numcoliformes=fuentes[0];
+	for (i=0; i<contador; i++){
+	if (fuentes[i].coliformes>0){
+		printf("%s ", fuentes[i].nombre);
+		
+	}
+	}
+	
+	return numcoliformes;
+	
+}
 //CREAMOS LA FUNCION QUE PERMITE AÑADIR UN NUEVO USUARIO
 
 
@@ -715,6 +773,7 @@ menuSistema(){
 	float ph, conductividad, turbidez, coliformes;
 	struct TAnalisis fuentes[200];
 	struct TAnalisis maxturbidez;
+	struct TAnalisis numcoliformes;
 	int nelementos;
 	int i;
 	nelementos=ficheroStruct(fuentes);
@@ -897,8 +956,8 @@ menuSistema(){
 									abrirficherolista(lista);
 	    	        printf("introduce el nombre del fichero que quiere mirar\n");
 	            	scanf("%s",nombrefichero);
-	            	maxturbidez=maximaturbidez(fuentes, maxturbidez);
-	    	        printf("\nFuente con mayor nivel de turbidez: %s       (%d   )", maxturbidez.nombre, maxturbidez.turbidez);
+	            	maximaturbidez(fuentes, maxturbidez, nombrefichero);
+	    	       
 	    	        printf("\n\n\n\tUtilice s y despues enter para volver al menu principal\n");
 		        	fflush(stdin);
 		   	     scanf("%c",&salir);
@@ -907,7 +966,30 @@ menuSistema(){
 		   		 			break;
 					}break;
 				
-			case 7 :
+			case 7:
+				
+				
+		   	system("cls");
+			system ("color 87");		
+			banner_fijo();
+							
+	    	printf("\tHAS ELEGIDO VER FUENTES CON COLIFORMES\n");
+	    	printf("\n\n");
+	    	do{
+									abrirficherolista(lista);
+	    	        printf("introduce el nombre del fichero que quiere mirar\n");
+	            	scanf("%s",nombrefichero);
+	            	numcoliformes=fuentescoliformes(fuentes, nombrefichero);
+	    	       
+	    	        printf("\n\n\n\tUtilice s y despues enter para volver al menu principal\n");
+		        	fflush(stdin);
+		   	     scanf("%c",&salir);
+		    		}while(salir=='s'&&salir=='S');
+		    		if(salir=='s'&&salir=='S'){
+		   		 			break;
+					}break;
+				
+			case 8 :
 		    	
 		    	farandule++;
 		    	system("cls");
@@ -928,7 +1010,7 @@ menuSistema(){
 		   		 			break;
 					}break;
 			
-			case 8 :
+			case 9 :
 				
 				farandule++;
 				system("cls");
