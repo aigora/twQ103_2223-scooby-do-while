@@ -44,7 +44,7 @@ void leerficherodatos(char[]);//solo valen para leer los ficheros con estructura
 void escribirficherodatos(char []);//solo valen para escribir los ficheros con estructura %s %f %f %f %f
 
 
-int ficheroStruct(struct TAnalisis fuentes[]);//pasa los datos del fichero a un vector de estructuras
+int ficheroStruct(struct TAnalisis fuentes[], char nombrefichero[]);//pasa los datos del fichero a un vector de estructuras
 
 void abrirficherolista(char []);
 float media(char nombrefichero[]);
@@ -230,11 +230,11 @@ void aguascaracteristicasdefiniciones(){
 }
 
 
-int ficheroStruct(struct TAnalisis fuentes[]){
+int ficheroStruct(struct TAnalisis fuentes[], char nombrefichero[]){
 	
 	int i ;
 	char titulo1[20], titulo2[20], titulo3[20], titulo4[20], titulo5[20];
-	FILE *fichero = fopen("fichero1.txt", "r");
+	FILE *fichero = fopen(nombrefichero, "r");
 	
 	if (fichero == NULL){
 		printf ("Error al abrir el fichero\n");
@@ -776,7 +776,7 @@ menuSistema(){
 	struct TAnalisis numcoliformes;
 	int nelementos;
 	int i;
-	nelementos=ficheroStruct(fuentes);
+	nelementos=ficheroStruct(fuentes, nombrefichero);
 		
 		int farandule=1;
 		int repite;
