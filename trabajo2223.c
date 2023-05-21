@@ -722,8 +722,8 @@ void ordenarconductividad(char nombrefichero[]){
 				}
 	
 void ordenarph(char nombrefichero[]){
-	float ph, conductividad, turbidez, coliformes, media;
-	  char nfuentes[10];
+	
+	struct TAnalisis fuentes[200];
 	  int contador=0, i=0, j;
 	  float vector[50], aux;
 	  int vector2[50];
@@ -738,8 +738,8 @@ void ordenarph(char nombrefichero[]){
 	        fscanf(fsalida1,"%s %s %s %s %s",titulo, titulo2, titulo3, titulo4, titulo5);
 	        printf("%s\n", titulo2);  
 	        fflush(stdin);
-            while(fscanf(fsalida1,"%s %f %f %f %f", nfuentes, &ph ,&conductividad, &turbidez, &coliformes)!=EOF){
-		      vector[i]= ph;
+            while(fscanf(fsalida1,"%s %f %f %f %f", fuentes[i].nombre, &fuentes[i].ph, &fuentes[i].conductividad, &fuentes[i].turbidez, &fuentes[i].coliformes )!=EOF){
+		      
 		      
 				contador++; 
 				i++;
@@ -750,15 +750,15 @@ void ordenarph(char nombrefichero[]){
 					
 			for (i=0; i<contador-1;i++){
                 for(j=i+1;j<contador;j++){
-                        if(vector[i]>vector[j]){
-                                aux=vector[i];
-                                vector[i]=vector[j];
-                                vector[j]=aux;
+                      if (fuentes[i].ph < fuentes[j].ph) {
+                struct TAnalisis maximo = fuentes[i];
+                fuentes[i] = fuentes[j ];
+                fuentes[j] = maximo;
                         }
                 }
         }
         for(i=0;i<contador;i++){
-                printf("%f \n", vector[i], vector2[i]);
+                printf("%f %s \n", fuentes[i].ph, fuentes[i].nombre);
         }
 
 				}
@@ -910,7 +910,7 @@ menuSistema(){
 									abrirficherolista(lista);
 	    	        printf("introduce el nombre del fichero que quiere mirar\n");
 	            	scanf("%s",nombrefichero);
-	            	printf("se ordenaran las fuentes de mas acida a mas basica\n");
+	            	printf("se ordenaran las fuentes de menos acida a mas acida\n");
 	    	        ordenarph(nombrefichero);
 	    	        printf("\n\n\n\tUtilice s y despues enter para volver al menu principal\n");
 		        	fflush(stdin);
